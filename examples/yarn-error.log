@@ -1,0 +1,55 @@
+Arguments: 
+  /Users/tur1ng/.nvm/versions/node/v16.0.0/bin/node /Users/tur1ng/.nvm/versions/node/v16.0.0/bin/yarn add -D @types/dayjs
+
+PATH: 
+  /Users/tur1ng/.nvm/versions/node/v16.0.0/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Users/tur1ng/.cargo/bin:/Users/tur1ng/Documents/Programming/zoomit/Dayjs-Jalali-Plugin/node_modules/.bin:/usr/local/mysql/bin/:/Users/tur1ng/Documents/Programming/Go/bin
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  16.0.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@types%2fdayjs: Not found
+      at Request.params.callback [as _callback] (/Users/tur1ng/.nvm/versions/node/v16.0.0/lib/node_modules/yarn/lib/cli.js:66988:18)
+      at Request.self.callback (/Users/tur1ng/.nvm/versions/node/v16.0.0/lib/node_modules/yarn/lib/cli.js:140662:22)
+      at Request.emit (node:events:365:28)
+      at Request.<anonymous> (/Users/tur1ng/.nvm/versions/node/v16.0.0/lib/node_modules/yarn/lib/cli.js:141634:10)
+      at Request.emit (node:events:365:28)
+      at IncomingMessage.<anonymous> (/Users/tur1ng/.nvm/versions/node/v16.0.0/lib/node_modules/yarn/lib/cli.js:141556:12)
+      at Object.onceWrapper (node:events:471:28)
+      at IncomingMessage.emit (node:events:377:35)
+      at endReadableNT (node:internal/streams/readable:1312:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+    "name": "examples",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "dev": "nodemon index.ts"
+    },
+    "keywords": [],
+    "dependencies": {
+      "@zoomit/dayjs-jalali-plugin": "file:..",
+      "dayjs": "^1.10.6"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "nodemon": "^2.0.9",
+      "ts-node": "^10.0.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
