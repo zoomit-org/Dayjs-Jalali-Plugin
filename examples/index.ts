@@ -5,6 +5,6 @@ dayjs.extend(jalaliPlugin);
 
 dayjs.calendar('jalali');
 
-console.log(dayjs(new Date(), {}));
-
-dayjs();
+const d = dayjs(new Date(), { jalali: false });
+console.log(d);
+console.log(d.locale('en').format('YYYY'));
