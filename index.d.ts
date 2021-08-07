@@ -3,10 +3,10 @@ import { PluginFunc, Dayjs } from 'dayjs';
 declare const plugin: PluginFunc;
 export = plugin;
 
-type calendarType = 'jalali' | 'gregory';
+type CalendarType = 'jalali' | 'gregory';
 
 declare module 'dayjs' {
-  export function calendar(calendarType: calendarType): Dayjs;
+  export function calendar(calendarType: CalendarType): Dayjs;
 
   export function isJalali(): boolean;
 
@@ -15,6 +15,6 @@ declare module 'dayjs' {
   }
 
   interface Dayjs {
-    calendar(type: 'jalali' | 'georgian'): Dayjs;
+    calendar(calendarType: CalendarType): Dayjs;
   }
 }
