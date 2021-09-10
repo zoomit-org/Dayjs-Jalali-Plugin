@@ -1,6 +1,6 @@
 {
   "name": "@zoomit/dayjs-jalali-plugin",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Persian (Jalali, Khorshidi) Plugin for Day.js",
   "main": "dist/cjs/bundle.cjs.js",
   "web": "dist/umd/bundle.umd.js",
@@ -38,7 +38,7 @@
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "babel-jest": "^27.0.6",
-    "dayjs": "^1.10.6",
+    "dayjs": "^1.10.7",
     "jest": "^24.9.0",
     "mockdate": "^2.0.5",
     "prettier": "^2.3.2",
