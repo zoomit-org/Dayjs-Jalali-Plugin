@@ -1,6 +1,6 @@
 {
   "name": "@zoomit/dayjs-jalali-plugin",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Persian (Jalali, Khorshidi) Plugin for Day.js",
   "main": "dist/cjs/bundle.cjs.js",
   "web": "dist/umd/bundle.umd.js",
