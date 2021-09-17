@@ -11,19 +11,19 @@ Unlike moment and becuase of immutablity of dayjs, there is no need for formats 
 ## Installation
 NPM
 ```
-npm install --save jalaliday
+npm install --save @zoomit/dayjs-jalali-plugin
 ```
 YARN
 ```
-yarn add jalaliday
+yarn add @zoomit/dayjs-jalali-plugin
 ```
 
 ## Usage
 ```javascript
 import dayjs from 'dayjs'
-import jalaliday from 'jalaliday'
+import jalaliPlugin from '@zoomit/dayjs-jalali-plugin'
 
-dayjs.extend(jalaliday)
+dayjs.extend(jalaliPlugin)
 ```
 
 ### Changing calendar
