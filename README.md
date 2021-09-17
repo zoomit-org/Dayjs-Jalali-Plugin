@@ -1,10 +1,9 @@
-# Jalaliday
+# Dayjs-Jalali-Plugin
 [![npm (scoped with tag)](https://img.shields.io/npm/v/jalaliday/latest.svg?style=flat-square)](https://npmjs.com/package/jalaliday)
 [![npm](https://img.shields.io/npm/dt/jalaliday.svg?style=flat-square)](https://npmjs.com/package/jalaliday)
-[![CircleCI](https://img.shields.io/circleci/project/github/alibaba-aero/jalaliday.svg?style=flat-square)](https://circleci.com/gh/)
 [![Codecov](https://img.shields.io/codecov/c/github/alibaba-aero/jalaliday.svg?style=flat-square)](https://codecov.io/gh/)
 
-Persian (Jalali, Khorshidi) Plugin for [Day.js](https://github.com/iamkun/dayjs), Jalaliday add multi-calendar functionality to Day.js core regardless for of locale, so we can have Gregorian calendar is Persian locale of Jalali calendar in English locale
+Persian (Jalali, Khorshidi) Plugin for [Day.js](https://github.com/iamkun/dayjs), This package add multi-calendar functionality to Day.js core regardless for of locale, so we can have Gregorian calendar is Persian locale of Jalali calendar in English locale
 Unlike moment and becuase of immutablity of dayjs, there is no need for formats like `jYYYY` or `jMM`, in Jalaliday all formats are same and standard
 
 >
