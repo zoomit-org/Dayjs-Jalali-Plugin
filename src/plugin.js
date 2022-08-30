@@ -40,6 +40,7 @@ export default (o, Dayjs, dayjs) => {
   const oldDate = proto.date;
   const oldDaysInMonth = proto.daysInMonth;
   const oldToArray = proto.toArray;
+  const oldLocaleData = proto.localeData;
 
   dayjs.$C = 'gregory';
   // First Day Of Week
@@ -283,10 +284,7 @@ export default (o, Dayjs, dayjs) => {
     return this.endOf(C.M).$jD;
   };
 
-  /**
-   * toArray function moved to official plugin
-   * Check function existence before override
-   */
+  // toArray plugin
   if (oldToArray) {
     proto.toArray = function () {
       if (!$isJalali(this)) {
@@ -299,4 +297,17 @@ export default (o, Dayjs, dayjs) => {
   proto.clone = function () {
     return wrapper(this.toDate(), this);
   };
+
+  // localeData plugin
+  if (oldLocaleData) {
+    proto.localeData = function () {
+      if (!$isJalali(this)) {
+        return oldLocaleData.bind(this)();
+      }
+      return {
+        ...oldLocaleData.bind(this)(),
+        months: () => C.fa.jmonths,
+      };
+    };
+  }
 };
