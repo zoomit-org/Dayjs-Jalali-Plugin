@@ -38,3 +38,11 @@ test('keep instance calendar on manipulation', () => {
   expect(dayjs(date).add(1, 'month').$C).toEqual('jalali')
   expect(dayjs(date).add(1, 'month').add(1, 'month').isJalali()).toEqual(true)
 })
+
+test('is jalali', () => {
+  dayjs.calendar('gregory')
+  expect(dayjs.isJalali()).toEqual(false)
+
+  dayjs.calendar('jalali')
+  expect(dayjs.isJalali()).toEqual(true)
+})
