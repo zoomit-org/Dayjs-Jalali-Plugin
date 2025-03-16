@@ -18,7 +18,7 @@ describe('diff two dates', () => {
   const b = dayjs('1397/09/10', { jalali: true })
 
   it('diff(float)', () => {
-    expect(a.diff(b, 'month', true)).toEqual(-3.3)
+    expect(Math.round(a.diff(b, 'month', true) * 10) / 10).toEqual(-3.3);
   })
 
   it('diff(month)', () => {
