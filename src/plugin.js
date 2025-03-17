@@ -62,6 +62,10 @@ export default (o, Dayjs, dayjs) => {
     return that;
   };
 
+  dayjs.isJalali = function () {
+    return $isJalali(this);
+  };
+  
   proto.isJalali = function () {
     return $isJalali(this);
   };
