@@ -6,12 +6,14 @@ import * as C from './constant';
 export default (o, Dayjs, dayjs) => {
   const proto = Dayjs.prototype;
   const U = proto.$utils();
+  if (proto.InitJalali) return;
   const $isJalali = (v) => v.$C === 'jalali';
   const $prettyUnit = U.prettyUnit || U.p;
   const $isUndefined = U.isUndefined || U.u;
   const $padStart = U.padStart || U.s;
   const $monthDiff = U.monthDiff || U.m;
   const $absFloor = U.absFloor || U.a;
+
   const wrapperOfTruth = (action) =>
     function (...args) {
       const unsure = action.bind(this)(...args);
@@ -284,7 +286,10 @@ export default (o, Dayjs, dayjs) => {
     return this.endOf(C.M).$jD;
   };
 
-  // toArray plugin
+  /**
+   * toArray function moved to official plugin
+   * Check function existence before override
+   */
   if (oldToArray) {
     proto.toArray = function () {
       if (!$isJalali(this)) {
@@ -293,10 +298,6 @@ export default (o, Dayjs, dayjs) => {
       return [this.$jy, this.$jM, this.$jD, this.$H, this.$m, this.$s, this.$ms];
     };
   }
-
-  proto.clone = function () {
-    return wrapper(this.toDate(), this);
-  };
 
   // localeData plugin
   if (oldLocaleData) {
@@ -310,4 +311,8 @@ export default (o, Dayjs, dayjs) => {
       };
     };
   }
+
+  proto.clone = function () {
+    return wrapper(this.toDate(), this);
+  };
 };

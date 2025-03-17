@@ -1,13 +1,6 @@
-/* eslint-disable */
-/*
- JavaScript functions for the Fourmilab Calendar Converter
- by John Walker  --  September, MIM
- http://www.fourmilab.ch/documents/calendar/
- This program is in the public domain.
- */
-
 /*  MOD  --  Modulus function which works for non-integers.  */
 const $floor = Math.floor;
+
 function mod(a, b) {
   return a - b * $floor(a / b);
 }
@@ -23,42 +16,37 @@ function lg(year) {
 // GREGORIAN_EPOCH
 const GE = 1721425.5;
 
-function g2j(year, month, day) {
-  return (
-    GE -
-    1 +
-    365 * (year - 1) +
-    $floor((year - 1) / 4) +
-    -$floor((year - 1) / 100) +
-    $floor((year - 1) / 400) +
-    $floor((367 * month - 362) / 12 + (month <= 2 ? 0 : lg(year) ? -1 : -2) + day)
-  );
+function gregorianToJulian(year, month, day) {
+  if (month <= 2) {
+    year -= 1;
+    month += 12;
+  }
+  var A = Math.floor(year / 100);
+  var B = 2 - A + Math.floor(A / 4);
+  var JD = Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + B - 1524.5;
+  return JD;
 }
 
 //  JD_TO_GREGORIAN  --  Calculate Gregorian calendar date from Julian day
 
-function j2g(jd) {
-  let wjd, depoch, quadricent, dqc, cent, dcent, quad, dquad, yindex, year, yearday, leapadj;
-
-  wjd = $floor(jd - 0.5) + 0.5;
-  depoch = wjd - GE;
-  quadricent = $floor(depoch / 146097);
-  dqc = mod(depoch, 146097);
-  cent = $floor(dqc / 36524);
-  dcent = mod(dqc, 36524);
-  quad = $floor(dcent / 1461);
-  dquad = mod(dcent, 1461);
-  yindex = $floor(dquad / 365);
-  year = quadricent * 400 + cent * 100 + quad * 4 + yindex;
-  if (!(cent == 4 || yindex == 4)) {
-    year++;
+function julianToGregorian(jd) {
+  jd = jd + 0.5;
+  var Z = Math.floor(jd);
+  var F = jd - Z;
+  var A = Z;
+  if (Z >= 2299161) {
+    var alpha = Math.floor((Z - 1867216.25) / 36524.25);
+    A = Z + 1 + alpha - Math.floor(alpha / 4);
   }
-  yearday = wjd - g2j(year, 1, 1);
-  leapadj = wjd < g2j(year, 3, 1) ? 0 : lg(year) ? 1 : 2;
-  let month = $floor(((yearday + leapadj) * 12 + 373) / 367),
-    day = wjd - g2j(year, month, 1) + 1;
+  var B = A + 1524;
+  var C = Math.floor((B - 122.1) / 365.25);
+  var D = Math.floor(365.25 * C);
+  var E = Math.floor((B - D) / 30.6001);
+  var day = B - D - Math.floor(30.6001 * E) + F;
+  var month = E < 14 ? E - 1 : E - 13;
+  var year = month > 2 ? C - 4716 : C - 4715;
 
-  return [year, month, day];
+  return [Math.floor(year), Math.floor(month), Math.floor(day)];
 }
 
 // PERSIAN_EPOCH
@@ -66,50 +54,105 @@ const PE = 1948320.5;
 
 //  PERSIAN_TO_JD  --  Determine Julian day from Persian date
 
-function p2j(year, month, day) {
-  let epbase, epyear;
+function persianToJulian(jy, jm, jd) {
+  var g_days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  var j_days_in_month = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
 
-  epbase = year - (year >= 0 ? 474 : 473);
-  epyear = 474 + mod(epbase, 2820);
+  function div(a, b) {
+    return Math.floor(a / b);
+  }
 
-  return (
-    day +
-    (month <= 7 ? (month - 1) * 31 : (month - 1) * 30 + 6) +
-    $floor((epyear * 682 - 110) / 2816) +
-    (epyear - 1) * 365 +
-    $floor(epbase / 2820) * 1029983 +
-    (PE - 1)
-  );
+  jy -= 979;
+  var j_day_no = 365 * jy + div(jy, 33) * 8 + div((jy % 33) + 3, 4);
+  for (var i = 0; i < jm - 1; ++i) {
+    j_day_no += j_days_in_month[i];
+  }
+  j_day_no += jd - 1;
+
+  var g_day_no = j_day_no + 79;
+
+  var gy = 1600 + 400 * div(g_day_no, 146097);
+  g_day_no = g_day_no % 146097;
+
+  var leap = true;
+  if (g_day_no >= 36525) {
+    g_day_no--;
+    gy += 100 * div(g_day_no, 36524);
+    g_day_no = g_day_no % 36524;
+
+    if (g_day_no >= 365) {
+      g_day_no++;
+    } else {
+      leap = false;
+    }
+  }
+
+  gy += 4 * div(g_day_no, 1461);
+  g_day_no %= 1461;
+
+  if (g_day_no >= 366) {
+    leap = false;
+    g_day_no--;
+    gy += div(g_day_no, 365);
+    g_day_no = g_day_no % 365;
+  }
+
+  for (i = 0; g_day_no >= g_days_in_month[i] + (i == 1 && leap); i++) {
+    g_day_no -= g_days_in_month[i] + (i == 1 && leap);
+  }
+  var gm = i + 1;
+  var gd = g_day_no + 1;
+
+  return gregorianToJulian(gy, gm, gd);
 }
 
 //  JD_TO_PERSIAN  --  Calculate Persian date from Julian day
 
-function j2p(jd) {
-  let year, month, day, depoch, cycle, cyear, ycycle, aux1, aux2, yday;
+function julianToPersian(jd) {
+  return gregorianToJalali(...julianToGregorian(jd));
+}
 
-  jd = $floor(jd) + 0.5;
+function gregorianToJalali(gYear, gMonth, gDay) {
+  var g_days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  var j_days_in_month = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
 
-  depoch = jd - p2j(475, 1, 1);
-  cycle = $floor(depoch / 1029983);
-  cyear = mod(depoch, 1029983);
-  if (cyear == 1029982) {
-    ycycle = 2820;
-  } else {
-    aux1 = $floor(cyear / 366);
-    aux2 = mod(cyear, 366);
-    ycycle = $floor((2134 * aux1 + 2816 * aux2 + 2815) / 1028522) + aux1 + 1;
+  function div(a, b) {
+    return Math.floor(a / b);
   }
-  year = ycycle + 2820 * cycle + 474;
-  if (year <= 0) {
-    year--;
+
+  var gy = gYear - 1600;
+  var gm = gMonth - 1;
+  var gd = gDay - 1;
+
+  var g_day_no = 365 * gy + div(gy + 3, 4) - div(gy + 99, 100) + div(gy + 399, 400);
+  for (var i = 0; i < gm; ++i) g_day_no += g_days_in_month[i];
+  if (gm > 1 && ((gYear % 4 == 0 && gYear % 100 != 0) || gYear % 400 == 0)) g_day_no++;
+  g_day_no += gd;
+
+  var j_day_no = g_day_no - 79;
+
+  var j_np = div(j_day_no, 12053);
+  j_day_no %= 12053;
+
+  var jy = 979 + 33 * j_np + 4 * div(j_day_no, 1461);
+  j_day_no %= 1461;
+
+  if (j_day_no >= 366) {
+    jy += div(j_day_no - 1, 365);
+    j_day_no = (j_day_no - 1) % 365;
   }
-  yday = jd - p2j(year, 1, 1) + 1;
-  month = yday <= 186 ? Math.ceil(yday / 31) : Math.ceil((yday - 6) / 30);
-  day = jd - p2j(year, month, 1) + 1;
-  return [year, month, day];
+
+  for (var j = 0; j < 11 && j_day_no >= j_days_in_month[j]; ++j) j_day_no -= j_days_in_month[j];
+  var jm = j + 1;
+  var jd = j_day_no + 1;
+  return [jy, jm, jd];
 }
 
 export default {
-  J: (y, m, d) => j2p(g2j(y, m, d)),
-  G: (y, m, d) => j2g(p2j(y, m, d)),
+  J: function J(y, m, d) {
+    return julianToPersian(gregorianToJulian(y, m, d));
+  },
+  G: function G(y, m, d) {
+    return julianToGregorian(persianToJulian(y, m, d));
+  },
 };

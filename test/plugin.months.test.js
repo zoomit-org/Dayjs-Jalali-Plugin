@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
 import jalali from '../src';
 import { fa } from '../src/constant';
-import localeData from 'dayjs/plugin/localeData';
 
 const weekdays = 'یک‌شنبه_دوشنبه_سه‌شنبه_چهارشنبه_پنج‌شنبه_جمعه_شنبه'.split('_');
 
